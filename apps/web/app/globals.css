@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .bg-gradient-primary {
+    @apply bg-gradient-primary;
+  }
+  .bg-gradient-secondary {
+    @apply bg-gradient-secondary;
+  }
+  .bg-gradient-hero {
+    @apply bg-gradient-hero;
+  }
+  .shadow-glow {
+    @apply shadow-glow;
+  }
+  .shadow-elevated {
+    @apply shadow-elevated;
+  }
+}

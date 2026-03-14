@@ -1,0 +1,16 @@
+{
+  "name": "@exceliboard/signaling",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node src/index.mjs",
+    "build": "echo 'No build step for signaling'",
+    "start": "node src/index.mjs"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.0",
+    "socket.io": "^4.8.0"
+  }
+}

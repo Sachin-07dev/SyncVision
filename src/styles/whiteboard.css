@@ -1,0 +1,640 @@
+/* ═══════════════════════════════════════════════
+   ExceliBoard — Whiteboard / Canvas Styles
+   Unique ExceliBoard design system layered on
+   top of the drawing engine.
+   ═══════════════════════════════════════════════ */
+
+/* ── Wrapper backgrounds per theme ──────────── */
+.wb-bg-default-light { background: linear-gradient(160deg, #f8fafc 0%, #eef1f6 50%, #e8ecf4 100%); }
+.wb-bg-default-dark  { background: linear-gradient(160deg, #0d1117 0%, #131820 50%, #161b22 100%); }
+.wb-bg-frost-light   { background: linear-gradient(160deg, #eef5ff 0%, #dceafe 50%, #dbe4ff 100%); }
+.wb-bg-frost-dark    { background: linear-gradient(160deg, #0a1628 0%, #0e1b33 50%, #0f1d3a 100%); }
+.wb-bg-midnight-light{ background: linear-gradient(160deg, #f5f3ff 0%, #ede9fe 50%, #e8e4f8 100%); }
+.wb-bg-midnight-dark { background: linear-gradient(160deg, #0b0d1a 0%, #12103a 50%, #1a1050 100%); }
+.wb-bg-aurora-light  { background: linear-gradient(160deg, #ecfdf5 0%, #e0fcf0 50%, #d5f5f6 100%); }
+.wb-bg-aurora-dark   { background: linear-gradient(160deg, #071a15 0%, #091e28 50%, #0d1a30 100%); }
+
+/* ══════════════════════════════════════════════
+   ExceliBoard toolbar chrome (header / footer)
+   ══════════════════════════════════════════════ */
+
+.wb-toolbar {
+  backdrop-filter: blur(24px) saturate(1.8);
+  -webkit-backdrop-filter: blur(24px) saturate(1.8);
+  border-bottom: 1px solid rgba(128, 128, 128, 0.12);
+}
+.light .wb-toolbar {
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+.dark .wb-toolbar {
+  background: rgba(13, 17, 23, 0.72);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+}
+
+.wb-statusbar {
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  border-top: 1px solid rgba(128, 128, 128, 0.1);
+}
+.light .wb-statusbar { background: rgba(255, 255, 255, 0.6); }
+.dark  .wb-statusbar { background: rgba(13, 17, 23, 0.55); }
+
+.wb-toolbar-btn {
+  position: relative;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  color: hsl(var(--foreground) / 0.55);
+}
+.wb-toolbar-btn:hover { color: hsl(var(--foreground)); }
+.light .wb-toolbar-btn:hover { background: rgba(0, 0, 0, 0.06); }
+.dark  .wb-toolbar-btn:hover { background: rgba(255, 255, 255, 0.08); }
+.wb-toolbar-btn.active {
+  color: hsl(var(--primary));
+  background: hsl(var(--primary) / 0.12);
+}
+
+.wb-divider {
+  width: 1px;
+  height: 1.25rem;
+  margin: 0 0.25rem;
+  background: hsl(var(--border) / 0.4);
+}
+
+.wb-share-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #ffffff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  margin-left: 0.25rem;
+}
+.wb-share-btn:hover {
+  opacity: 0.92;
+  transform: translateY(-0.5px);
+}
+
+.wb-dropdown {
+  border: 1px solid hsl(var(--border));
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.14);
+}
+.light .wb-dropdown { background: rgba(255, 255, 255, 0.97); backdrop-filter: blur(12px); }
+.dark  .wb-dropdown { background: rgba(22, 27, 34, 0.96); backdrop-filter: blur(12px); }
+
+/* ══════════════════════════════════════════════
+   Canvas container — ensure drawing engine fills it
+   ══════════════════════════════════════════════ */
+.wb-canvas-container {
+  position: relative;
+}
+
+.wb-canvas-container .excalidraw-container,
+.wb-canvas-container .excalidraw,
+.wb-canvas-container .excalidraw .layer-ui__wrapper {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* ══════════════════════════════════════════════
+   1. HIDE EXCALIDRAW BRANDING
+   Replace with ExceliBoard identity via our
+   custom header bar above the canvas.
+   ══════════════════════════════════════════════ */
+
+/* Hide the Excalidraw logo element everywhere */
+.excalidraw-board-wrapper .excalidraw .ExcalidrawLogo,
+.excalidraw-board-wrapper .excalidraw .welcome-screen-decor,
+.excalidraw-board-wrapper .excalidraw .welcome-screen-decor-hint {
+  display: none !important;
+}
+
+/* Hide the default main-menu hamburger trigger
+   — our custom header has its own menu/nav */
+.excalidraw-board-wrapper .excalidraw .main-menu-trigger {
+  display: none !important;
+}
+
+/* Hide the help icon — we have our own */
+.excalidraw-board-wrapper .excalidraw .help-icon {
+  display: none !important;
+}
+
+/* ══════════════════════════════════════════════
+   2. EXCALIDRAW CSS VARIABLE OVERRIDES
+   Set ExceliBoard's brand tokens so every panel,
+   button, picker inherits our look automatically.
+   ══════════════════════════════════════════════ */
+
+/* ── Default theme (light) ─────────────────── */
+.excalidraw-board-wrapper .excalidraw {
+  --color-primary: #7c5cfc;
+  --color-primary-darker: #6a4de8;
+  --color-primary-darkest: #5840c8;
+  --color-primary-light: #ece9ff;
+  --color-primary-light-darker: #ddd8ff;
+  --color-primary-hover: #6b59f0;
+  --color-selection: #7c5cfc;
+  --color-brand-hover: #6b59f0;
+  --color-brand-active: #5840c8;
+  --color-logo-icon: #7c5cfc;
+
+  --island-bg-color: rgba(255, 255, 255, 0.82);
+  --default-bg-color: #ffffff;
+  --color-surface-high: #f0eeff;
+  --color-surface-mid: #f4f3fa;
+  --color-surface-low: #eeedfa;
+  --color-surface-lowest: #ffffff;
+  --color-on-surface: #1a1a2e;
+  --popup-bg-color: rgba(255, 255, 255, 0.95);
+  --popup-secondary-bg-color: #f4f3fa;
+
+  --shadow-island: 0 2px 16px rgba(100, 80, 180, 0.10), 0 0 0 1px rgba(100, 80, 180, 0.06);
+  --default-border-color: rgba(120, 100, 200, 0.14);
+  --color-border-outline: rgba(120, 100, 200, 0.15);
+  --color-border-outline-variant: rgba(120, 100, 200, 0.08);
+
+  --button-gray-1: #eeecfa;
+  --button-gray-2: #ddd9f0;
+  --button-gray-3: #c0bbd6;
+  --button-hover-bg: var(--color-surface-high);
+
+  --input-bg-color: #ffffff;
+  --input-border-color: rgba(120, 100, 200, 0.2);
+  --input-hover-bg-color: #f6f5fc;
+
+  --scrollbar-thumb: rgba(120, 100, 200, 0.2);
+  --scrollbar-thumb-hover: rgba(120, 100, 200, 0.35);
+
+  --default-button-size: 2rem;
+  --lg-button-size: 2.25rem;
+  --border-radius-md: 0.625rem;
+  --border-radius-lg: 0.75rem;
+
+  --ui-font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ── Default theme (dark) ─────────────────── */
+.excalidraw-board-wrapper .excalidraw.theme--dark {
+  --color-primary: #a78bfa;
+  --color-primary-darker: #b49dff;
+  --color-primary-darkest: #c4b5ff;
+  --color-primary-light: #3b3560;
+  --color-primary-light-darker: #302a50;
+  --color-primary-hover: #b9a4ff;
+  --color-selection: #7c5cfc;
+  --color-brand-hover: #b9a4ff;
+  --color-brand-active: #c4b5ff;
+  --color-logo-icon: #a78bfa;
+
+  --island-bg-color: rgba(20, 22, 34, 0.88);
+  --default-bg-color: #0d1117;
+  --color-surface-high: rgba(60, 55, 95, 0.45);
+  --color-surface-mid: rgba(30, 30, 50, 0.6);
+  --color-surface-low: rgba(22, 24, 38, 0.7);
+  --color-surface-lowest: #0d1117;
+  --color-on-surface: #e2e0f0;
+  --popup-bg-color: rgba(20, 22, 34, 0.96);
+  --popup-secondary-bg-color: rgba(30, 30, 50, 0.7);
+  --popup-text-color: #e2e0f0;
+
+  --shadow-island: 0 2px 20px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(140, 130, 210, 0.08);
+  --default-border-color: rgba(140, 130, 210, 0.1);
+  --color-border-outline: rgba(140, 130, 210, 0.14);
+  --color-border-outline-variant: rgba(140, 130, 210, 0.07);
+
+  --button-gray-1: rgba(60, 55, 95, 0.5);
+  --button-gray-2: rgba(40, 38, 65, 0.7);
+  --button-gray-3: rgba(30, 28, 50, 0.8);
+
+  --input-bg-color: rgba(18, 20, 30, 0.8);
+  --input-border-color: rgba(140, 130, 210, 0.15);
+  --input-hover-bg-color: rgba(30, 30, 50, 0.6);
+
+  --scrollbar-thumb: rgba(140, 130, 210, 0.2);
+  --scrollbar-thumb-hover: rgba(140, 130, 210, 0.35);
+}
+
+/* ══════════════════════════════════════════════
+   FROST theme overrides
+   ══════════════════════════════════════════════ */
+.excalidraw-board-wrapper.wb-theme-frost .excalidraw {
+  --color-primary: #3b82f6;
+  --color-primary-darker: #2563eb;
+  --color-primary-darkest: #1d4ed8;
+  --color-primary-light: #dbeafe;
+  --color-primary-hover: #2563eb;
+  --color-selection: #3b82f6;
+  --island-bg-color: rgba(240, 248, 255, 0.84);
+  --color-surface-high: #dbeafe;
+  --color-surface-mid: #e8f1fc;
+  --shadow-island: 0 2px 16px rgba(59, 130, 246, 0.08), 0 0 0 1px rgba(59, 130, 246, 0.06);
+  --default-border-color: rgba(59, 130, 246, 0.12);
+  --button-gray-1: #e0ecfc;
+}
+.excalidraw-board-wrapper.wb-theme-frost .excalidraw.theme--dark {
+  --color-primary: #60a5fa;
+  --color-primary-darker: #93bbfd;
+  --color-primary-darkest: #bfdbfe;
+  --color-primary-light: #1e3a5f;
+  --color-primary-hover: #93bbfd;
+  --island-bg-color: rgba(12, 20, 42, 0.88);
+  --color-surface-high: rgba(30, 58, 95, 0.5);
+  --color-surface-mid: rgba(20, 35, 60, 0.6);
+  --shadow-island: 0 2px 20px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(96, 165, 250, 0.06);
+  --default-border-color: rgba(96, 165, 250, 0.1);
+  --button-gray-1: rgba(30, 58, 95, 0.5);
+}
+
+/* ══════════════════════════════════════════════
+   MIDNIGHT theme overrides
+   ══════════════════════════════════════════════ */
+.excalidraw-board-wrapper.wb-theme-midnight .excalidraw {
+  --color-primary: #a855f7;
+  --color-primary-darker: #9333ea;
+  --color-primary-darkest: #7e22ce;
+  --color-primary-light: #f3e8ff;
+  --color-primary-hover: #9333ea;
+  --color-selection: #a855f7;
+  --island-bg-color: rgba(250, 248, 255, 0.84);
+  --color-surface-high: #f3e8ff;
+  --color-surface-mid: #f5f0ff;
+  --shadow-island: 0 2px 16px rgba(168, 85, 247, 0.08), 0 0 0 1px rgba(168, 85, 247, 0.06);
+  --default-border-color: rgba(168, 85, 247, 0.12);
+  --button-gray-1: #ede4fc;
+}
+.excalidraw-board-wrapper.wb-theme-midnight .excalidraw.theme--dark {
+  --color-primary: #c084fc;
+  --color-primary-darker: #d8b4fe;
+  --color-primary-darkest: #e9d5ff;
+  --color-primary-light: #3b1764;
+  --color-primary-hover: #d8b4fe;
+  --island-bg-color: rgba(16, 12, 36, 0.90);
+  --color-surface-high: rgba(60, 30, 100, 0.4);
+  --color-surface-mid: rgba(35, 20, 65, 0.6);
+  --shadow-island: 0 2px 20px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(192, 132, 252, 0.06);
+  --default-border-color: rgba(192, 132, 252, 0.1);
+  --button-gray-1: rgba(60, 30, 100, 0.45);
+}
+
+/* ══════════════════════════════════════════════
+   AURORA theme overrides
+   ══════════════════════════════════════════════ */
+.excalidraw-board-wrapper.wb-theme-aurora .excalidraw {
+  --color-primary: #10b981;
+  --color-primary-darker: #059669;
+  --color-primary-darkest: #047857;
+  --color-primary-light: #d1fae5;
+  --color-primary-hover: #059669;
+  --color-selection: #10b981;
+  --island-bg-color: rgba(240, 253, 248, 0.84);
+  --color-surface-high: #d1fae5;
+  --color-surface-mid: #e6faf0;
+  --shadow-island: 0 2px 16px rgba(16, 185, 129, 0.08), 0 0 0 1px rgba(16, 185, 129, 0.06);
+  --default-border-color: rgba(16, 185, 129, 0.12);
+  --button-gray-1: #d8f8eb;
+}
+.excalidraw-board-wrapper.wb-theme-aurora .excalidraw.theme--dark {
+  --color-primary: #34d399;
+  --color-primary-darker: #6ee7b7;
+  --color-primary-darkest: #a7f3d0;
+  --color-primary-light: #064e3b;
+  --color-primary-hover: #6ee7b7;
+  --island-bg-color: rgba(8, 20, 18, 0.90);
+  --color-surface-high: rgba(10, 80, 60, 0.35);
+  --color-surface-mid: rgba(12, 40, 35, 0.55);
+  --shadow-island: 0 2px 20px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(52, 211, 153, 0.06);
+  --default-border-color: rgba(52, 211, 153, 0.1);
+  --button-gray-1: rgba(10, 80, 60, 0.4);
+}
+
+/* ══════════════════════════════════════════════
+   3. STRUCTURAL OVERRIDES — reshape the layout
+      to look distinctly like ExceliBoard
+   ══════════════════════════════════════════════ */
+
+/* ── Reshape Islands into pill / capsule panels ─ */
+.excalidraw-board-wrapper .excalidraw .Island {
+  border-radius: 1rem !important;
+  border: 1px solid var(--default-border-color) !important;
+  backdrop-filter: blur(24px) saturate(1.8) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(1.8) !important;
+  transition: box-shadow 0.2s ease, transform 0.2s ease !important;
+}
+
+/* ── Top toolbar area — centered floating capsule ── */
+.excalidraw-board-wrapper .excalidraw .App-toolbar-container {
+  padding-top: 0.5rem !important;
+}
+
+.excalidraw-board-wrapper .excalidraw .shapes-section {
+  /* Space between shape toolbar and any adjacent elements */
+  gap: 0.5rem !important;
+}
+
+.excalidraw-board-wrapper .excalidraw .App-toolbar-container .Island {
+  padding: 0.25rem 0.5rem !important;
+  gap: 0.125rem !important;
+  border-radius: 1rem !important;
+}
+
+/* ── Toolbar divider ─────────────────────────── */
+.excalidraw-board-wrapper .excalidraw .App-toolbar__divider {
+  height: 1.25rem !important;
+  margin: 0 0.25rem !important;
+  opacity: 0.3 !important;
+}
+
+/* ── Tool buttons — squircle shape ───────────── */
+.excalidraw-board-wrapper .excalidraw .ToolIcon_type_button,
+.excalidraw-board-wrapper .excalidraw .ToolIcon_type_radio,
+.excalidraw-board-wrapper .excalidraw .ToolIcon_type_checkbox {
+  border-radius: 0.625rem !important;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.excalidraw-board-wrapper .excalidraw .ToolIcon_type_button:hover,
+.excalidraw-board-wrapper .excalidraw .ToolIcon_type_radio:hover {
+  transform: translateY(-1px);
+}
+
+/* ── Selected tool — thick accent underline instead of ring ── */
+.excalidraw-board-wrapper .excalidraw .ToolIcon--selected .ToolIcon__icon {
+  background: var(--color-primary-light) !important;
+  border-radius: 0.625rem !important;
+  box-shadow: 0 3px 0 0 var(--color-primary) !important;
+}
+
+/* ── "More tools" extra trigger ──────────────── */
+.excalidraw-board-wrapper .excalidraw .App-toolbar__extra-tools-trigger {
+  border-radius: 0.625rem !important;
+}
+
+/* ── Property panel (left sidebar) — wide card ── */
+.excalidraw-board-wrapper .excalidraw .App-menu__left {
+  padding: 0.5rem !important;
+}
+
+.excalidraw-board-wrapper .excalidraw .App-menu__left .Island {
+  border-radius: 1rem !important;
+  padding: 0.875rem !important;
+}
+
+/* ── Panel section labels — ExceliBoard style ── */
+.excalidraw-board-wrapper .excalidraw .panelColumn .control-label,
+.excalidraw-board-wrapper .excalidraw .panelColumn h3,
+.excalidraw-board-wrapper .excalidraw .panelColumn legend {
+  font-weight: 700 !important;
+  font-size: 0.625rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  opacity: 0.55 !important;
+  margin-bottom: 0.375rem !important;
+}
+
+/* ── Color swatches — round circles (not squares) ── */
+.excalidraw-board-wrapper .excalidraw .color-picker__button {
+  border-radius: 50% !important;
+  transition: transform 0.12s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.12s ease !important;
+  width: 1.5rem !important;
+  height: 1.5rem !important;
+}
+
+.excalidraw-board-wrapper .excalidraw .color-picker__button:hover {
+  transform: scale(1.2);
+  z-index: 1;
+}
+
+.excalidraw-board-wrapper .excalidraw .color-picker__button.active,
+.excalidraw-board-wrapper .excalidraw .color-picker__button[aria-selected="true"] {
+  box-shadow: 0 0 0 2.5px var(--color-primary), 0 0 8px rgba(124, 92, 252, 0.25) !important;
+  transform: scale(1.15);
+}
+
+.excalidraw-board-wrapper .excalidraw .color-picker__button--large {
+  width: 1.75rem !important;
+  height: 1.75rem !important;
+  border-radius: 50% !important;
+}
+
+.excalidraw-board-wrapper .excalidraw .color-picker__top-picks {
+  gap: 0.25rem !important;
+}
+
+/* ── Stroke / fill option buttons — pill shape ── */
+.excalidraw-board-wrapper .excalidraw .panelColumn .buttonList button,
+.excalidraw-board-wrapper .excalidraw .panelColumn .iconSelectList button {
+  border-radius: 0.625rem !important;
+  transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.excalidraw-board-wrapper .excalidraw .panelColumn .buttonList button:hover,
+.excalidraw-board-wrapper .excalidraw .panelColumn .iconSelectList button:hover {
+  transform: translateY(-1px);
+}
+
+.excalidraw-board-wrapper .excalidraw .panelColumn .buttonList button.active,
+.excalidraw-board-wrapper .excalidraw .panelColumn .buttonList button[aria-checked="true"],
+.excalidraw-board-wrapper .excalidraw .panelColumn .iconSelectList button.active,
+.excalidraw-board-wrapper .excalidraw .panelColumn .iconSelectList button[aria-checked="true"] {
+  background: var(--color-primary-light) !important;
+  box-shadow: 0 2px 0 0 var(--color-primary) !important;
+}
+
+/* ── Opacity slider track ────────────────────── */
+.excalidraw-board-wrapper .excalidraw input[type="range"] {
+  accent-color: var(--color-primary);
+}
+
+/* ── Bottom-left controls — unified capsule bar ── */
+.excalidraw-board-wrapper .excalidraw .zoom-actions {
+  border-radius: 1rem !important;
+}
+.excalidraw-board-wrapper .excalidraw .zoom-actions .zoom-button {
+  border-radius: 0.625rem !important;
+}
+.excalidraw-board-wrapper .excalidraw .zoom-actions .reset-zoom-button {
+  font-size: 0.7rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
+}
+
+.excalidraw-board-wrapper .excalidraw .undo-redo-buttons {
+  border-radius: 1rem !important;
+}
+.excalidraw-board-wrapper .excalidraw .undo-redo-buttons button {
+  border-radius: 0.625rem !important;
+  transition: all 0.12s ease !important;
+}
+.excalidraw-board-wrapper .excalidraw .undo-redo-buttons button:hover {
+  transform: translateY(-1px);
+}
+
+/* ── Footer area ─────────────────────────────── */
+.excalidraw-board-wrapper .excalidraw .footer-center {
+  border-radius: 1rem !important;
+}
+
+/* ── Top-right area (collab, user list, etc.) ── */
+.excalidraw-board-wrapper .excalidraw .layer-ui__wrapper__top-right {
+  /* Push down so it doesn't clash with our header */
+  margin-top: 0.25rem !important;
+}
+
+.excalidraw-board-wrapper .excalidraw .UserList-Wrapper {
+  border-radius: 1rem !important;
+}
+
+/* ── Dropdown / context menus — rounded card ─── */
+.excalidraw-board-wrapper .excalidraw .dropdown-menu-container {
+  border-radius: 1rem !important;
+  border: 1px solid var(--default-border-color) !important;
+  backdrop-filter: blur(20px) saturate(1.8) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15) !important;
+}
+
+.excalidraw-board-wrapper .excalidraw .dropdown-menu-item-base {
+  border-radius: 0.5rem !important;
+  transition: background 0.1s ease !important;
+  margin: 0 0.25rem !important;
+}
+
+.excalidraw-board-wrapper .excalidraw .context-menu {
+  border-radius: 1rem !important;
+  border: 1px solid var(--default-border-color) !important;
+  backdrop-filter: blur(20px) saturate(1.8) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15) !important;
+}
+
+.excalidraw-board-wrapper .excalidraw .context-menu-item {
+  border-radius: 0.5rem !important;
+  margin: 0 0.25rem !important;
+}
+
+/* ── Dialog / Modals — larger radius ─────────── */
+.excalidraw-board-wrapper .excalidraw .Modal__content {
+  border-radius: 1.25rem !important;
+  border: 1px solid var(--default-border-color) !important;
+  backdrop-filter: blur(20px) !important;
+}
+
+/* ── Sidebar — frosted glass panel ───────────── */
+.excalidraw-board-wrapper .excalidraw .sidebar,
+.excalidraw-board-wrapper .excalidraw .default-sidebar {
+  border-left: 1px solid var(--default-border-color) !important;
+  backdrop-filter: blur(24px) saturate(1.8) !important;
+}
+
+.excalidraw-board-wrapper .excalidraw .sidebar-triggers .sidebar-tab-trigger {
+  border-radius: 0.625rem !important;
+}
+
+/* ── Welcome screen — ExceliBoard branded ────── */
+.excalidraw-board-wrapper .excalidraw .welcome-screen-center {
+  background: transparent !important;
+}
+
+.excalidraw-board-wrapper .excalidraw .welcome-screen-center__heading {
+  font-weight: 500 !important;
+  opacity: 0.7 !important;
+}
+
+.excalidraw-board-wrapper .excalidraw .welcome-screen-menu-item {
+  border-radius: 1rem !important;
+  transition: background 0.15s ease, transform 0.15s ease !important;
+}
+.excalidraw-board-wrapper .excalidraw .welcome-screen-menu-item:hover {
+  transform: translateY(-1px);
+}
+
+/* ── Tooltip / popover ───────────────────────── */
+.excalidraw-board-wrapper .excalidraw .popover {
+  border-radius: 0.75rem !important;
+  border: 1px solid var(--default-border-color) !important;
+}
+
+/* ── Collab / live button ────────────────────── */
+.excalidraw-board-wrapper .excalidraw .CollabButton {
+  border-radius: 1rem !important;
+}
+
+/* ── Scrollbars — thin, matches theme ────────── */
+.excalidraw-board-wrapper .excalidraw ::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+.excalidraw-board-wrapper .excalidraw ::-webkit-scrollbar-track {
+  background: transparent;
+}
+.excalidraw-board-wrapper .excalidraw ::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 4px;
+}
+.excalidraw-board-wrapper .excalidraw ::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+/* ══════════════════════════════════════════════
+   4. LANDING PAGE — themed demo embed
+   ══════════════════════════════════════════════ */
+.landing-canvas-demo .excalidraw {
+  --color-primary: #7c5cfc;
+  --color-primary-light: #ece9ff;
+  --island-bg-color: rgba(255, 255, 255, 0.85);
+  --shadow-island: 0 2px 16px rgba(100, 80, 180, 0.08);
+  --default-border-color: rgba(120, 100, 200, 0.12);
+  --border-radius-md: 0.625rem;
+  --border-radius-lg: 0.75rem;
+}
+
+.landing-canvas-demo .excalidraw .ExcalidrawLogo,
+.landing-canvas-demo .excalidraw .welcome-screen-decor,
+.landing-canvas-demo .excalidraw .welcome-screen-decor-hint,
+.landing-canvas-demo .excalidraw .main-menu-trigger,
+.landing-canvas-demo .excalidraw .help-icon {
+  display: none !important;
+}
+
+.landing-canvas-demo .excalidraw .Island {
+  border-radius: 1rem !important;
+  backdrop-filter: blur(20px) !important;
+}
+
+.landing-canvas-demo .excalidraw .ToolIcon--selected .ToolIcon__icon {
+  box-shadow: 0 3px 0 0 var(--color-primary) !important;
+  background: var(--color-primary-light) !important;
+  border-radius: 0.625rem !important;
+}
+
+.landing-canvas-demo .excalidraw .color-picker__button {
+  border-radius: 50% !important;
+}
+
+/* ══════════════════════════════════════════════
+   5. RESPONSIVE
+   ══════════════════════════════════════════════ */
+@media (max-width: 640px) {
+  .wb-toolbar { padding-left: 0.5rem; padding-right: 0.5rem; }
+  .wb-share-btn > span:not(.sr-only) { display: none; }
+  
+  .excalidraw-board-wrapper .excalidraw .App-menu__left .Island {
+    padding: 0.5rem !important;
+    border-radius: 0.75rem !important;
+  }
+}
+
+@media (min-width: 1921px) {
+  .excalidraw-board-wrapper .excalidraw {
+    --default-button-size: 2.25rem;
+    --lg-button-size: 2.5rem;
+  }
+}

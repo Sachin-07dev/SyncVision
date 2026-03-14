@@ -1,0 +1,97 @@
+[
+  {
+    "id": "431c8c40-689c-4b4a-be79-b96021551e6b",
+    "email": "copilot_test_user3@exceliboard.local",
+    "password_hash": "$2b$12$/TPO.5n3LMmTVEx7VoUh2e5zdjg0cSCIBKzgaGoxpQx6pyTFhZpXC",
+    "display_name": "Copilot Test 3",
+    "avatar_url": null,
+    "role": "student",
+    "org_id": null,
+    "timezone": "UTC",
+    "locale": "en-US",
+    "created_at": "2026-03-02T20:13:51.695Z",
+    "last_active_at": "2026-03-03T04:54:04.586Z",
+    "preferences": {
+      "theme": "dark",
+      "notifications": true,
+      "soundEffects": true,
+      "compactMode": false
+    }
+  },
+  {
+    "id": "4d7e10ab-e4c6-4bbe-b4b3-9eeb245af6f5",
+    "email": "copilot_signup_1772482541@exceliboard.local",
+    "password_hash": "$2b$12$XGVTkZo4aqJA.ZemQLxjguelOkD5dGHYXAC8ry8bPHLmEkpxiop22",
+    "display_name": "Copilot Signup",
+    "avatar_url": null,
+    "role": "teacher",
+    "org_id": null,
+    "timezone": "UTC",
+    "locale": "en-US",
+    "created_at": "2026-03-02T20:15:41.948Z",
+    "last_active_at": "2026-03-02T20:15:41.948Z",
+    "preferences": {
+      "theme": "dark",
+      "notifications": true,
+      "soundEffects": true,
+      "compactMode": false
+    }
+  },
+  {
+    "id": "41d3fe69-4b86-4597-a0dd-da1b255a6b8e",
+    "email": "sachinsisodia0001000@gmail.com",
+    "password_hash": "$2b$12$6dHgtHnzgIMf.P7Qtno4t.XZItqwUoQJIETZUuiMZypAo7IY1f3sm",
+    "display_name": "Sachin sisodiya",
+    "avatar_url": null,
+    "role": "student",
+    "org_id": null,
+    "timezone": "UTC",
+    "locale": "en-US",
+    "created_at": "2026-03-02T20:31:28.068Z",
+    "last_active_at": "2026-03-03T05:00:19.605Z",
+    "preferences": {
+      "theme": "dark",
+      "notifications": true,
+      "soundEffects": true,
+      "compactMode": false
+    }
+  },
+  {
+    "id": "954f38e6-bc19-45ec-9f48-c55a314ee16c",
+    "email": "abhi1234@gmail.com",
+    "password_hash": "$2b$12$8eXWnDGHcD76rK94LTyGn.xBdfy0WaSjgwzt8QyUtlQbgF51lAr5G",
+    "display_name": "Rahul",
+    "avatar_url": null,
+    "role": "interviewer",
+    "org_id": null,
+    "timezone": "UTC",
+    "locale": "en-US",
+    "created_at": "2026-03-02T20:32:24.419Z",
+    "last_active_at": "2026-03-02T20:32:24.419Z",
+    "preferences": {
+      "theme": "dark",
+      "notifications": true,
+      "soundEffects": true,
+      "compactMode": false
+    }
+  },
+  {
+    "id": "6150cd9b-1115-4769-855d-599aa1d592e8",
+    "email": "sachinsisodiya.work@gmail.com",
+    "password_hash": "$2b$12$w3jUYCdi4VOcacZhYUjwOOuzS3CKbl2XMR5NRjGnmE.c05hbIIzVe",
+    "display_name": "SAchin singh",
+    "avatar_url": null,
+    "role": "student",
+    "org_id": null,
+    "timezone": "UTC",
+    "locale": "en-US",
+    "created_at": "2026-03-03T03:19:55.488Z",
+    "last_active_at": "2026-03-03T03:19:55.488Z",
+    "preferences": {
+      "theme": "dark",
+      "notifications": true,
+      "soundEffects": true,
+      "compactMode": false
+    }
+  }
+]

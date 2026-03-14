@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --radius: 0.75rem;
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* ── Dark Theme (default) ─────────────────── */
+  .dark {
+    --background: 240 10% 5%;
+    --foreground: 240 5% 96%;
+
+    --card: 240 8% 8%;
+    --card-foreground: 240 5% 96%;
+
+    --popover: 240 8% 10%;
+    --popover-foreground: 240 5% 96%;
+
+    --primary: 263 70% 60%;
+    --primary-foreground: 240 5% 96%;
+    --primary-glow: 263 80% 70%;
+
+    --secondary: 180 65% 55%;
+    --secondary-foreground: 240 10% 5%;
+
+    --muted: 240 6% 15%;
+    --muted-foreground: 240 5% 64%;
+
+    --accent: 263 70% 60%;
+    --accent-foreground: 240 5% 96%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 240 5% 96%;
+
+    --border: 240 6% 18%;
+    --input: 240 6% 18%;
+    --ring: 263 70% 60%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(263 70% 60%), hsl(230 70% 50%));
+    --gradient-secondary: linear-gradient(135deg, hsl(180 65% 55%), hsl(263 70% 60%));
+    --gradient-hero: linear-gradient(180deg, hsl(240 10% 5%), hsl(263 40% 12%));
+    --shadow-glow: 0 0 40px hsl(263 70% 60% / 0.3);
+    --shadow-elevated: 0 20px 50px hsl(240 10% 2% / 0.5);
+  }
+
+  /* ── Light Theme ──────────────────────────── */
+  .light {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 10%;
+
+    --card: 0 0% 98%;
+    --card-foreground: 240 10% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 10%;
+
+    --primary: 263 70% 55%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 263 80% 65%;
+
+    --secondary: 180 65% 45%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 240 5% 93%;
+    --muted-foreground: 240 5% 40%;
+
+    --accent: 263 60% 55%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 240 6% 85%;
+    --input: 240 6% 85%;
+    --ring: 263 70% 55%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(263 70% 55%), hsl(230 70% 45%));
+    --gradient-secondary: linear-gradient(135deg, hsl(180 65% 45%), hsl(263 70% 55%));
+    --gradient-hero: linear-gradient(180deg, hsl(0 0% 100%), hsl(263 40% 95%));
+    --shadow-glow: 0 0 40px hsl(263 70% 55% / 0.15);
+    --shadow-elevated: 0 20px 50px hsl(240 10% 60% / 0.15);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
