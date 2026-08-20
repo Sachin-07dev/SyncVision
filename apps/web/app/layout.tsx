@@ -3,7 +3,7 @@ import './globals.css';
 import { Providers } from './providers';
 
 export const metadata: Metadata = {
-  title: 'ExceliBoard — AI-Powered Collaboration Platform',
+  title: 'SyncVision — AI-Powered Collaboration Platform',
   description: 'Real-time meetings, interviews, lectures, and collaborative boards powered by AI.',
 };
 

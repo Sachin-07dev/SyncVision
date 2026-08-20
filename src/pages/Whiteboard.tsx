@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
+import { SyncVisionIcon, TriangleV } from "@/components/Logo";
 import { Excalidraw, MainMenu, WelcomeScreen } from "@excalidraw/excalidraw";
 import "@excalidraw/excalidraw/index.css";
 import "@/styles/whiteboard.css";
@@ -70,7 +71,7 @@ const BOARD_THEMES: Record<
 
 const Whiteboard = () => {
   const { id: boardId } = useParams<{ id: string }>();
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, isDemo } = useAuth();
   const { resolvedTheme, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
@@ -89,18 +90,26 @@ const Whiteboard = () => {
   const nameInputRef = useRef<HTMLInputElement>(null);
   const autoSaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const boardIdRef = useRef<string | undefined>(undefined);
+  const initialLoadDone = useRef(false);
 
   const isDark = resolvedTheme === "dark";
   const themeConfig = BOARD_THEMES[boardTheme];
 
   /* ── Load existing board ───────────────────── */
   useEffect(() => {
-    if (!boardId) return;
+    if (!boardId) {
+      initialLoadDone.current = true;
+      return;
+    }
+    initialLoadDone.current = false;
     api.boards
       .get(boardId)
       .then((b: any) => {
+        const loadedId = b.id;
+        boardIdRef.current = loadedId;
         setBoard({
-          id: b.id,
+          id: loadedId,
           name: b.name,
           elements: b.data?.elements || [],
           appState: b.data?.state || {},
@@ -109,20 +118,22 @@ const Whiteboard = () => {
         if (excalidrawAPI && b.data?.elements) {
           excalidrawAPI.updateScene({ elements: b.data.elements });
         }
+        // Allow auto-save after a short delay so the onChange from updateScene doesn't trigger a create
+        setTimeout(() => { initialLoadDone.current = true; }, 500);
       })
       .catch(() => {
-        /* new board or no access */
+        initialLoadDone.current = true;
       });
   }, [boardId, excalidrawAPI]);
 
-  /* ── Auto-save (debounced 3s after last change) */
+  /* ── Auto-save (debounced 10ms after last change, only for real logged-in users) */
   const scheduleAutoSave = useCallback(() => {
-    if (!isAuthenticated || !excalidrawAPI) return;
+    if (!isAuthenticated || isDemo || !excalidrawAPI || !initialLoadDone.current) return;
     if (autoSaveTimerRef.current) clearTimeout(autoSaveTimerRef.current);
     autoSaveTimerRef.current = setTimeout(() => {
       handleSave(true);
-    }, 3000);
-  }, [isAuthenticated, excalidrawAPI, board.id, boardName]);
+    }, 10);
+  }, [isAuthenticated, isDemo, excalidrawAPI, boardName]);
 
   /* ── Manual save ───────────────────────────── */
   const handleSave = async (silent = false) => {
@@ -135,10 +146,11 @@ const Whiteboard = () => {
     setIsSaving(true);
     const elements = excalidrawAPI.getSceneElements();
     const state = excalidrawAPI.getAppState();
+    const currentBoardId = boardIdRef.current || board.id;
 
     try {
-      if (board.id) {
-        await api.boards.update(board.id, {
+      if (currentBoardId) {
+        await api.boards.update(currentBoardId, {
           name: boardName,
           data: { elements, state },
         });
@@ -147,6 +159,7 @@ const Whiteboard = () => {
           elements,
           state,
         });
+        boardIdRef.current = created.id;
         setBoard((prev) => ({ ...prev, id: created.id }));
         window.history.replaceState(null, "", `/whiteboard/${created.id}`);
       }
@@ -220,11 +233,14 @@ const Whiteboard = () => {
             to={isAuthenticated ? "/dashboard" : "/"}
             className="flex items-center gap-1.5 group flex-shrink-0"
           >
-            <div
-              className={`w-7 h-7 rounded-lg bg-gradient-to-br ${themeConfig.accent} flex items-center justify-center shadow-lg transition-transform group-hover:scale-105`}
-            >
-              <span className="text-xs font-bold text-white">E</span>
+            <div className="transition-transform group-hover:scale-105">
+              <SyncVisionIcon size={28} />
             </div>
+            <span className="text-sm font-extrabold tracking-tight leading-none select-none hidden sm:inline">
+              <span className="text-pink-600 dark:text-pink-400">Sync</span>
+              <TriangleV height={14} />
+              <span className="text-pink-600 dark:text-pink-400">ision</span>
+            </span>
           </Link>
 
           <div className="wb-divider" />
@@ -388,6 +404,7 @@ const Whiteboard = () => {
             <MainMenu.Item
               onSelect={() => {
                 window.history.pushState(null, "", "/whiteboard");
+                boardIdRef.current = undefined;
                 setBoard({ name: "Untitled Board", elements: [], appState: {} });
                 setBoardName("Untitled Board");
                 excalidrawAPI?.resetScene();
@@ -402,13 +419,13 @@ const Whiteboard = () => {
             <WelcomeScreen.Center>
               <WelcomeScreen.Center.Logo>
                 <div className="flex items-center gap-3">
-                  <div
-                    className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${themeConfig.accent} flex items-center justify-center shadow-xl`}
-                  >
-                    <span className="text-xl font-bold text-white">E</span>
-                  </div>
+                  <SyncVisionIcon size={48} />
                   <div>
-                    <h2 className="text-xl font-bold">ExceliBoard</h2>
+                    <h2 className="text-xl font-extrabold tracking-tight leading-none select-none">
+                      <span className="text-pink-600 dark:text-pink-400">Sync</span>
+                      <TriangleV height={20} />
+                      <span className="text-pink-600 dark:text-pink-400">ision</span>
+                    </h2>
                     <p className="text-xs text-muted-foreground">
                       Collaborative Canvas
                     </p>
@@ -433,7 +450,7 @@ const Whiteboard = () => {
         <div className="flex items-center gap-3">
           <span className="flex items-center gap-1">
             <Zap className="w-3 h-3 text-primary" />
-            ExceliBoard Canvas
+            SyncVision Canvas
           </span>
           {isAuthenticated && (
             <span className="flex items-center gap-1">

@@ -16,8 +16,8 @@
     "plugins": [{ "name": "next" }],
     "paths": {
       "@/*": ["./*"],
-      "@exceliboard/types": ["../../packages/types/src"],
-      "@exceliboard/utils": ["../../packages/utils/src"]
+      "@SyncVision/types": ["../../packages/types/src"],
+      "@SyncVision/utils": ["../../packages/utils/src"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

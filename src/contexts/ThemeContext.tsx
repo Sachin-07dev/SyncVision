@@ -23,7 +23,7 @@ const resolveTheme = (theme: Theme): 'light' | 'dark' => {
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setThemeState] = useState<Theme>(() => {
-    const stored = localStorage.getItem('exceliboard-theme');
+    const stored = localStorage.getItem('SyncVision-theme');
     return (stored as Theme) || 'dark';
   });
 
@@ -39,7 +39,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 
   const setTheme = useCallback((t: Theme) => {
     setThemeState(t);
-    localStorage.setItem('exceliboard-theme', t);
+    localStorage.setItem('SyncVision-theme', t);
     applyTheme(t);
   }, [applyTheme]);
 

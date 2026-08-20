@@ -56,7 +56,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <div className="w-9 h-9 bg-gradient-primary rounded-lg flex items-center justify-center shadow-glow flex-shrink-0">
               <span className="text-sm font-bold text-white">E</span>
             </div>
-            {!sidebarCollapsed && <span className="text-lg font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">ExceliBoard</span>}
+            {!sidebarCollapsed && <span className="text-lg font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">SyncVision</span>}
           </Link>
         </div>
 

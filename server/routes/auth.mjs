@@ -98,7 +98,7 @@ function isDatabaseConnectivityError(error) {
 // ── POST /api/auth/signup ────────────────────
 router.post('/signup', async (req, res) => {
   try {
-    const { password, displayName, role = 'student' } = req.body;
+    const { password, displayName, role = 'student', customRoleName } = req.body;
     const email = normalizeEmail(req.body.email);
 
     if (!email || !password || !displayName) {
@@ -109,9 +109,13 @@ router.post('/signup', async (req, res) => {
       return res.status(400).json({ error: 'Password must be at least 6 characters' });
     }
 
-    const validRoles = ['student', 'teacher', 'interviewer', 'org_admin'];
+    const validRoles = ['student', 'teacher', 'interviewer', 'org_admin', 'other'];
     if (!validRoles.includes(role)) {
       return res.status(400).json({ error: `Invalid role. Must be one of: ${validRoles.join(', ')}` });
+    }
+
+    if (role === 'other' && (!customRoleName || !customRoleName.trim())) {
+      return res.status(400).json({ error: 'customRoleName is required when role is other' });
     }
 
     // Check if user exists

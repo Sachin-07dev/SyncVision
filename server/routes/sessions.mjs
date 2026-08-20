@@ -51,6 +51,34 @@ router.post('/', async (req, res) => {
   }
 });
 
+// ── PUT /api/sessions/:id ───────────────────
+router.put('/:id', async (req, res) => {
+  try {
+    const { title, startTime, scheduledDuration, description } = req.body;
+    const sets = [];
+    const params = [];
+    let idx = 1;
+
+    if (title !== undefined) { sets.push(`title = $${idx++}`); params.push(title); }
+    if (startTime !== undefined) { sets.push(`start_time = $${idx++}`); params.push(startTime); }
+    if (scheduledDuration !== undefined) { sets.push(`scheduled_duration = $${idx++}`); params.push(scheduledDuration); }
+    if (description !== undefined) { sets.push(`description = $${idx++}`); params.push(description); }
+
+    if (sets.length === 0) return res.status(400).json({ error: 'No fields to update' });
+
+    params.push(req.params.id, req.user.id);
+    const result = await pool.query(
+      `UPDATE sessions SET ${sets.join(', ')} WHERE id = $${idx++} AND host_id = $${idx} RETURNING *`,
+      params
+    );
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Session not found or access denied' });
+    res.json(mapSession(result.rows[0]));
+  } catch (err) {
+    console.error('Update session error:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // ── GET /api/sessions/:id ───────────────────
 router.get('/:id', async (req, res) => {
   try {

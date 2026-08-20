@@ -95,7 +95,7 @@ export default function HomePage() {
         <div className="container mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl sm:text-5xl font-bold mb-4">Built for Every <span className="text-secondary">Use Case</span></h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">From classrooms to boardrooms, ExceliBoard adapts to your needs</p>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">From classrooms to boardrooms, SyncVision adapts to your needs</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {useCases.map((uc, i) => (
@@ -121,7 +121,7 @@ export default function HomePage() {
           <Card className="bg-gradient-primary border-0 shadow-glow">
             <CardContent className="p-12 text-center">
               <h2 className="text-4xl sm:text-5xl font-bold mb-6">Ready to Transform Your Collaboration?</h2>
-              <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">Join thousands of teams already using ExceliBoard to work smarter, not harder.</p>
+              <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">Join thousands of teams already using SyncVision to work smarter, not harder.</p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link href="/auth?mode=signup">
                   <Button size="lg" variant="secondary" className="text-lg px-8 h-14">Start Free Trial</Button>

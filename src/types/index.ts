@@ -1,10 +1,10 @@
 // ═══════════════════════════════════════════════
-// ExceliBoard — Core Type Definitions
+// SyncVision — Core Type Definitions
 // ═══════════════════════════════════════════════
 
 // ── User & Auth ──────────────────────────────
 
-export type UserRole = 'student' | 'teacher' | 'interviewer' | 'interviewee' | 'org_admin' | 'super_admin';
+export type UserRole = 'student' | 'teacher' | 'interviewer' | 'interviewee' | 'org_admin' | 'super_admin' | 'other';
 
 export interface User {
   id: string;
@@ -12,6 +12,7 @@ export interface User {
   displayName: string;
   avatarUrl?: string;
   role: UserRole;
+  customRoleName?: string;
   orgId?: string;
   timezone: string;
   locale: string;

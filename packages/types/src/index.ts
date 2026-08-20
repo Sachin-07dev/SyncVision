@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════
-// ExceliBoard — Shared Type Definitions
+// SyncVision — Shared Type Definitions
 // ═══════════════════════════════════════════════
 
 export type UserRole = 'student' | 'teacher' | 'interviewer' | 'interviewee' | 'org_admin' | 'super_admin';

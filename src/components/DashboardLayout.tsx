@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import Logo from '@/components/Logo';
 import { useAuth } from '@/contexts/AuthContext';
 import ThemeToggle from '@/components/ThemeToggle';
 import { Button } from '@/components/ui/button';
@@ -32,6 +33,7 @@ import {
   Search,
   Menu,
   Sparkles,
+  History,
 } from 'lucide-react';
 
 interface DashboardLayoutProps {
@@ -53,15 +55,56 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
     .join('')
     .toUpperCase() || 'U';
 
-  const mainNav = [
-    { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
-    { icon: Video, label: 'Meetings', path: '/meetings' },
-    { icon: Users, label: 'Interviews', path: '/interviews' },
-    { icon: GraduationCap, label: 'Lectures', path: '/lectures' },
-    { icon: PenTool, label: 'Boards', path: '/boards' },
-    { icon: Brain, label: 'AI Assistant', path: '/ai-tutor' },
-    { icon: Calendar, label: 'Schedule', path: '/schedule' },
-  ];
+  // Role-specific navigation
+  const roleNavMap: Record<string, { icon: any; label: string; path: string }[]> = {
+    student: [
+      { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
+      { icon: GraduationCap, label: 'Lectures', path: '/lectures' },
+      { icon: PenTool, label: 'My Boards', path: '/boards' },
+      { icon: Video, label: 'Meetings', path: '/meetings' },
+      { icon: Brain, label: 'AI Tutor', path: '/ai-tutor/chat' },
+      { icon: Calendar, label: 'Schedule', path: '/schedule' },
+      { icon: History, label: 'History', path: '/history' },
+    ],
+    teacher: [
+      { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
+      { icon: GraduationCap, label: 'Lectures', path: '/lectures' },
+      { icon: PenTool, label: 'Boards', path: '/boards' },
+      { icon: Video, label: 'Meetings', path: '/meetings' },
+      { icon: Users, label: 'Interviews', path: '/interviews' },
+      { icon: Brain, label: 'AI Assistant', path: '/ai-tutor/chat' },
+      { icon: Calendar, label: 'Schedule', path: '/schedule' },
+      { icon: History, label: 'History', path: '/history' },
+    ],
+    interviewer: [
+      { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
+      { icon: Users, label: 'Interviews', path: '/interviews' },
+      { icon: PenTool, label: 'Code Boards', path: '/boards' },
+      { icon: Video, label: 'Meetings', path: '/meetings' },
+      { icon: Calendar, label: 'Schedule', path: '/schedule' },
+      { icon: History, label: 'History', path: '/history' },
+    ],
+    org_admin: [
+      { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
+      { icon: Video, label: 'Meetings', path: '/meetings' },
+      { icon: Users, label: 'Interviews', path: '/interviews' },
+      { icon: GraduationCap, label: 'Lectures', path: '/lectures' },
+      { icon: PenTool, label: 'Boards', path: '/boards' },
+      { icon: Brain, label: 'AI Assistant', path: '/ai-tutor/chat' },
+      { icon: Calendar, label: 'Schedule', path: '/schedule' },
+      { icon: History, label: 'History', path: '/history' },
+    ],
+    other: [
+      { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
+      { icon: PenTool, label: 'Boards', path: '/boards' },
+      { icon: Video, label: 'Meetings', path: '/meetings' },
+      { icon: Brain, label: 'AI Assistant', path: '/ai-tutor/chat' },
+      { icon: Calendar, label: 'Schedule', path: '/schedule' },
+      { icon: History, label: 'History', path: '/history' },
+    ],
+  };
+
+  const mainNav = roleNavMap[user?.role || 'other'] || roleNavMap.other;
 
   const adminNav = [
     { icon: BarChart3, label: 'Analytics', path: '/admin/analytics' },
@@ -69,7 +112,11 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
     { icon: Settings, label: 'Settings', path: '/settings' },
   ];
 
-  const showAdmin = user?.role === 'org_admin' || user?.role === 'super_admin' || user?.role === 'teacher';
+  const showAdmin = user?.role === 'org_admin' || user?.role === 'super_admin';
+
+  const roleLabel = user?.role === 'other' && user?.customRoleName
+    ? user.customRoleName
+    : user?.role?.replace('_', ' ');
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -87,7 +134,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
               Switch role
             </Link>
             <span className="opacity-40">|</span>
-            <button onClick={logout} className="underline text-primary-foreground/80 hover:text-primary-foreground text-xs">
+            <button onClick={() => { logout(); navigate('/'); }} className="underline text-primary-foreground/80 hover:text-primary-foreground text-xs">
               Exit demo
             </button>
           </div>
@@ -102,16 +149,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       >
         {/* Logo */}
         <div className="flex items-center h-16 px-4 border-b border-border">
-          <Link to="/dashboard" className="flex items-center gap-2 group">
-            <div className="w-9 h-9 bg-gradient-primary rounded-lg flex items-center justify-center shadow-glow flex-shrink-0">
-              <span className="text-sm font-bold text-white">E</span>
-            </div>
-            {!sidebarCollapsed && (
-              <span className="text-lg font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                ExceliBoard
-              </span>
-            )}
-          </Link>
+          <Logo to="/dashboard" size="sm" showText={!sidebarCollapsed} />
         </div>
 
         {/* Quick Create */}
@@ -128,9 +166,6 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 
         {/* Main Navigation */}
         <nav className="flex-1 overflow-y-auto px-3 py-2 space-y-1">
-          <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-3 mb-2">
-            {!sidebarCollapsed && 'Main'}
-          </div>
           {mainNav.map((item) => {
             const Icon = item.icon;
             const active = isActive(item.path);
@@ -253,7 +288,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                     <span>{user?.displayName}</span>
                     <span className="text-xs font-normal text-muted-foreground">{user?.email}</span>
                     <Badge variant="outline" className="w-fit mt-1 text-[10px] capitalize">
-                      {user?.role?.replace('_', ' ')}
+                      {roleLabel}
                     </Badge>
                   </div>
                 </DropdownMenuLabel>
@@ -262,7 +297,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                   <Settings className="w-4 h-4 mr-2" /> Settings
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={logout} className="text-destructive">
+                <DropdownMenuItem onClick={() => { logout(); navigate('/'); }} className="text-destructive">
                   <LogOut className="w-4 h-4 mr-2" /> Sign Out
                 </DropdownMenuItem>
               </DropdownMenuContent>

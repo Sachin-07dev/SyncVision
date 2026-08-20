@@ -13,14 +13,14 @@ export default function Footer() {
               <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center shadow-glow">
                 <span className="text-xl font-bold text-white">E</span>
               </div>
-              <span className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">ExceliBoard</span>
+              <span className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">SyncVision</span>
             </div>
             <p className="text-sm text-muted-foreground">AI-powered collaborative whiteboard for teams, educators, and innovators.</p>
             <div className="flex space-x-4">
               <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><Github size={20} /></a>
               <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><Twitter size={20} /></a>
               <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><Linkedin size={20} /></a>
-              <a href="mailto:hello@exceliboard.com" className="text-muted-foreground hover:text-primary transition-colors"><Mail size={20} /></a>
+              <a href="mailto:hello@SyncVision.com" className="text-muted-foreground hover:text-primary transition-colors"><Mail size={20} /></a>
             </div>
           </div>
 
@@ -55,7 +55,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-border mt-8 pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; {currentYear} ExceliBoard. All rights reserved.</p>
+          <p>&copy; {currentYear} SyncVision. All rights reserved.</p>
         </div>
       </div>
     </footer>

@@ -104,7 +104,7 @@ const Settings = () => {
                   </div>
                   <div className="space-y-2">
                     <Label>Organization</Label>
-                    <Input defaultValue="ExceliBoard Inc." />
+                    <Input defaultValue="SyncVision Inc." />
                   </div>
                 </div>
 

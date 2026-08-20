@@ -7,7 +7,7 @@ import { Check } from 'lucide-react';
 
 const plans = [
   {
-    name: 'Free', price: '$0', description: 'Perfect for trying out ExceliBoard', popular: false, cta: 'Get Started',
+    name: 'Free', price: '$0', description: 'Perfect for trying out SyncVision', popular: false, cta: 'Get Started',
     features: ['1 collaborative board', 'Basic drawing tools', 'Up to 3 participants', '24-hour session history', 'Community support'],
   },
   {

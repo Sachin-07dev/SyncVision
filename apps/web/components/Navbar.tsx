@@ -37,7 +37,7 @@ export default function Navbar() {
             <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center shadow-glow group-hover:scale-110 transition-transform">
               <span className="text-xl font-bold text-white">E</span>
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">ExceliBoard</span>
+            <span className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">SyncVision</span>
           </Link>
 
           {/* Desktop Nav */}

@@ -66,7 +66,7 @@ export default function AuthPage() {
           </CardTitle>
           <CardDescription className="text-center">
             {isSignUp
-              ? 'Sign up to start collaborating with ExceliBoard'
+              ? 'Sign up to start collaborating with SyncVision'
               : 'Sign in to continue to your workspace'}
           </CardDescription>
         </CardHeader>

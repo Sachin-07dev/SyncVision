@@ -6,9 +6,12 @@ import Footer from "@/components/Footer";
 import { Excalidraw } from "@excalidraw/excalidraw";
 import "@excalidraw/excalidraw/index.css";
 import "@/styles/whiteboard.css";
-import { ChevronRight, Users, Video, PenTool, ArrowUpRight } from "lucide-react";
+import { ChevronRight, Users, Video, PenTool, ArrowUpRight, LayoutDashboard } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Index = () => {
+  const { isAuthenticated } = useAuth();
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -28,16 +31,33 @@ const Index = () => {
 
           {/* Auth Buttons */}
           <div className="flex flex-col sm:flex-row gap-3 justify-center items-center mb-12">
-            <Link to="/auth?mode=signup">
-              <Button size="lg" className="text-lg px-8 h-13 bg-primary hover:bg-primary/90">
-                Register for Free <ChevronRight className="ml-2 w-5 h-5" />
-              </Button>
-            </Link>
-            <Link to="/auth">
-              <Button size="lg" variant="outline" className="text-lg px-8 h-13">
-                Sign In
-              </Button>
-            </Link>
+            {isAuthenticated ? (
+              <>
+                <Link to="/dashboard">
+                  <Button size="lg" className="text-lg px-8 h-13 bg-primary hover:bg-primary/90">
+                    <LayoutDashboard className="mr-2 w-5 h-5" /> Go to Dashboard
+                  </Button>
+                </Link>
+                <Link to="/whiteboard">
+                  <Button size="lg" variant="outline" className="text-lg px-8 h-13">
+                    Open Whiteboard <ChevronRight className="ml-2 w-5 h-5" />
+                  </Button>
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link to="/auth?mode=signup">
+                  <Button size="lg" className="text-lg px-8 h-13 bg-primary hover:bg-primary/90">
+                    Register for Free <ChevronRight className="ml-2 w-5 h-5" />
+                  </Button>
+                </Link>
+                <Link to="/auth">
+                  <Button size="lg" variant="outline" className="text-lg px-8 h-13">
+                    Sign In
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </section>
@@ -121,7 +141,7 @@ const Index = () => {
                 Ready to Start Collaborating?
               </h2>
               <p className="text-muted-foreground mb-6 max-w-lg mx-auto">
-                Create a free account and start using ExceliBoard with your team in seconds.
+                Create a free account and start using SyncVision with your team in seconds.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Link to="/auth?mode=signup">

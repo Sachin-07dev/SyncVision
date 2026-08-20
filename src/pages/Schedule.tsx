@@ -4,6 +4,25 @@ import DashboardLayout from '@/components/DashboardLayout';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import {
   Calendar,
   Clock,
@@ -14,6 +33,9 @@ import {
   Users,
   Code2,
   Loader2,
+  MoreVertical,
+  XCircle,
+  CalendarClock,
 } from 'lucide-react';
 import { api } from '@/lib/api';
 import { toast } from 'sonner';
@@ -26,6 +48,9 @@ const Schedule = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [cancelTarget, setCancelTarget] = useState<any>(null);
+  const [postponeTarget, setPostponeTarget] = useState<any>(null);
+  const [newStartTime, setNewStartTime] = useState('');
 
   useEffect(() => {
     const load = async () => {
@@ -78,6 +103,33 @@ const Schedule = () => {
       case 'interview': return 'text-orange-400 bg-orange-500/20';
       case 'lecture': return 'text-emerald-400 bg-emerald-500/20';
       default: return 'text-muted-foreground bg-muted/20';
+    }
+  };
+
+  const cancelEvent = async () => {
+    if (!cancelTarget) return;
+    try {
+      await api.sessions.updateStatus(cancelTarget.id, 'cancelled');
+      setEvents((prev) => prev.map((e) => e.id === cancelTarget.id ? { ...e, status: 'cancelled' } : e));
+      toast.success(`${cancelTarget.type === 'lecture' ? 'Lecture' : cancelTarget.type === 'meeting' ? 'Meeting' : 'Session'} cancelled`);
+    } catch (err: any) {
+      toast.error(err.message || 'Failed to cancel');
+    } finally {
+      setCancelTarget(null);
+    }
+  };
+
+  const postponeEvent = async () => {
+    if (!postponeTarget || !newStartTime) return;
+    try {
+      const updated = await api.sessions.update(postponeTarget.id, { startTime: new Date(newStartTime).toISOString() });
+      setEvents((prev) => prev.map((e) => e.id === postponeTarget.id ? { ...e, startTime: updated.startTime } : e));
+      toast.success('Session postponed');
+    } catch (err: any) {
+      toast.error(err.message || 'Failed to postpone');
+    } finally {
+      setPostponeTarget(null);
+      setNewStartTime('');
     }
   };
 
@@ -169,19 +221,40 @@ const Schedule = () => {
                   <h3 className="font-semibold mb-3">Upcoming</h3>
                   <div className="space-y-3">
                     {upcomingEvents.map((event) => (
-                      <button key={event.id} onClick={() => navigate(`/room/${event.id}`)} className="w-full text-left flex items-start gap-3">
-                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${typeColor(event.type)}`}>
-                          {typeIcon(event.type)}
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <p className="text-sm font-medium truncate">{event.title}</p>
-                          <div className="flex items-center gap-2 mt-0.5 text-[11px] text-muted-foreground">
-                            <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{new Date(event.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                            <span className="flex items-center gap-1"><Users className="w-3 h-3" />{event.participants?.length || 0}</span>
+                      <div key={event.id} className="flex items-start gap-3">
+                        <button onClick={() => navigate(`/room/${event.id}`)} className="flex items-start gap-3 flex-1 text-left min-w-0">
+                          <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${typeColor(event.type)}`}>
+                            {typeIcon(event.type)}
                           </div>
-                        </div>
-                        <Badge variant="outline" className="text-[10px] capitalize">{event.type}</Badge>
-                      </button>
+                          <div className="min-w-0 flex-1">
+                            <p className={`text-sm font-medium truncate ${event.status === 'cancelled' ? 'line-through opacity-60' : ''}`}>{event.title}</p>
+                            <div className="flex items-center gap-2 mt-0.5 text-[11px] text-muted-foreground">
+                              <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{new Date(event.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                              <span className="flex items-center gap-1"><Users className="w-3 h-3" />{event.participants?.length || 0}</span>
+                            </div>
+                          </div>
+                        </button>
+                        {event.status !== 'cancelled' && (
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="icon" className="h-6 w-6 flex-shrink-0">
+                                <MoreVertical className="w-3 h-3" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem onClick={() => { setPostponeTarget(event); setNewStartTime(''); }}>
+                                <CalendarClock className="w-4 h-4 mr-2" /> Postpone
+                              </DropdownMenuItem>
+                              <DropdownMenuItem className="text-destructive" onClick={() => setCancelTarget(event)}>
+                                <XCircle className="w-4 h-4 mr-2" /> Cancel
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        )}
+                        {event.status === 'cancelled' && (
+                          <Badge variant="destructive" className="text-[9px] flex-shrink-0">Cancelled</Badge>
+                        )}
+                      </div>
                     ))}
                     {upcomingEvents.length === 0 && (
                       <p className="text-sm text-muted-foreground text-center py-4">No upcoming events</p>
@@ -192,6 +265,43 @@ const Schedule = () => {
             </div>
           </div>
         )}
+
+        {/* Cancel Confirmation */}
+        <AlertDialog open={!!cancelTarget} onOpenChange={(open) => !open && setCancelTarget(null)}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Cancel Session</AlertDialogTitle>
+              <AlertDialogDescription>
+                Are you sure you want to cancel <strong>{cancelTarget?.title}</strong>? This action cannot be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Keep Session</AlertDialogCancel>
+              <AlertDialogAction onClick={cancelEvent} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                Cancel Session
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+        {/* Postpone Dialog */}
+        <Dialog open={!!postponeTarget} onOpenChange={(open) => { if (!open) { setPostponeTarget(null); setNewStartTime(''); } }}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Postpone Session</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4 mt-4">
+              <p className="text-sm text-muted-foreground">Reschedule <strong>{postponeTarget?.title}</strong> to a new time.</p>
+              <div className="space-y-2">
+                <Label>New Start Time</Label>
+                <Input type="datetime-local" value={newStartTime} onChange={(e) => setNewStartTime(e.target.value)} />
+              </div>
+              <Button className="w-full bg-gradient-primary" disabled={!newStartTime} onClick={postponeEvent}>
+                Confirm Postpone
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </DashboardLayout>
   );
