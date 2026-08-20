@@ -10,6 +10,7 @@ export interface AuthUser {
   displayName: string;
   avatarUrl?: string;
   role: UserRole;
+  customRoleName?: string;
   orgId?: string;
   timezone: string;
   locale: string;
@@ -29,8 +30,8 @@ interface AuthContextType {
   isLoading: boolean;
   isDemo: boolean;
   login: (email: string, password: string) => Promise<void>;
-  signup: (email: string, password: string, displayName: string, role: string) => Promise<void>;
-  loginAsDemo: (role: string) => void;
+  signup: (email: string, password: string, displayName: string, role: string, customRoleName?: string) => Promise<void>;
+  loginAsDemo: (role: string, customRoleName?: string) => void;
   logout: () => void;
 }
 
@@ -39,7 +40,7 @@ interface AuthContextType {
 const DEMO_PERSONAS: Record<string, Omit<AuthUser, 'createdAt' | 'lastActiveAt'>> = {
   student: {
     id: 'demo_student',
-    email: 'demo+student@exceliboard.app',
+    email: 'demo+student@SyncVision.app',
     displayName: 'Alex (Demo Student)',
     role: 'student',
     timezone: 'UTC', locale: 'en',
@@ -47,7 +48,7 @@ const DEMO_PERSONAS: Record<string, Omit<AuthUser, 'createdAt' | 'lastActiveAt'>
   },
   teacher: {
     id: 'demo_teacher',
-    email: 'demo+teacher@exceliboard.app',
+    email: 'demo+teacher@SyncVision.app',
     displayName: 'Dr. Sarah (Demo Teacher)',
     role: 'teacher',
     timezone: 'UTC', locale: 'en',
@@ -55,7 +56,7 @@ const DEMO_PERSONAS: Record<string, Omit<AuthUser, 'createdAt' | 'lastActiveAt'>
   },
   interviewer: {
     id: 'demo_interviewer',
-    email: 'demo+interviewer@exceliboard.app',
+    email: 'demo+interviewer@SyncVision.app',
     displayName: 'James (Demo Interviewer)',
     role: 'interviewer',
     timezone: 'UTC', locale: 'en',
@@ -63,9 +64,18 @@ const DEMO_PERSONAS: Record<string, Omit<AuthUser, 'createdAt' | 'lastActiveAt'>
   },
   org_admin: {
     id: 'demo_admin',
-    email: 'demo+admin@exceliboard.app',
+    email: 'demo+admin@SyncVision.app',
     displayName: 'Maria (Demo Admin)',
     role: 'org_admin',
+    timezone: 'UTC', locale: 'en',
+    preferences: { theme: 'dark', notifications: true, soundEffects: false, compactMode: false },
+  },
+  other: {
+    id: 'demo_other',
+    email: 'demo+other@SyncVision.app',
+    displayName: 'Pat (Demo Other)',
+    role: 'other',
+    customRoleName: 'Freelancer',
     timezone: 'UTC', locale: 'en',
     preferences: { theme: 'dark', notifications: true, soundEffects: false, compactMode: false },
   },
@@ -74,7 +84,10 @@ const DEMO_PERSONAS: Record<string, Omit<AuthUser, 'createdAt' | 'lastActiveAt'>
 function buildDemoUser(role: string): AuthUser {
   const now = new Date().toISOString();
   const base = DEMO_PERSONAS[role] ?? DEMO_PERSONAS.student;
-  return { ...base, createdAt: now, lastActiveAt: now };
+  // Unique ID per tab/session — prevents signaling collision when
+  // two demo users with the same role join the same room.
+  const sessionSuffix = Math.random().toString(36).slice(2, 8);
+  return { ...base, id: `${base.id}_${sessionSuffix}`, createdAt: now, lastActiveAt: now };
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -88,14 +101,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // On mount, restore demo session OR real token session
   useEffect(() => {
-    const demoRole = localStorage.getItem('exceliboard_demo_role');
+    const demoRole = localStorage.getItem('SyncVision_demo_role');
     if (demoRole) {
-      setUser(buildDemoUser(demoRole));
+      const demoUser = buildDemoUser(demoRole);
+      const customRole = localStorage.getItem('SyncVision_demo_custom_role');
+      if (demoRole === 'other' && customRole) {
+        demoUser.customRoleName = customRole;
+        demoUser.displayName = `${customRole} (Demo)`;
+      }
+      setUser(demoUser);
       setIsDemo(true);
       setIsLoading(false);
       return;
     }
-    const token = localStorage.getItem('exceliboard_token');
+    const token = localStorage.getItem('SyncVision_token');
     if (!token) {
       setIsLoading(false);
       return;
@@ -103,7 +122,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     api.auth.me()
       .then((u) => setUser(u as unknown as AuthUser))
       .catch(() => {
-        localStorage.removeItem('exceliboard_token');
+        localStorage.removeItem('SyncVision_token');
       })
       .finally(() => setIsLoading(false));
   }, []);
@@ -112,8 +131,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading(true);
     try {
       const { token, user: u } = await api.auth.login(email, password);
-      localStorage.removeItem('exceliboard_demo_role');
-      localStorage.setItem('exceliboard_token', token);
+      localStorage.removeItem('SyncVision_demo_role');
+      localStorage.setItem('SyncVision_token', token);
       setIsDemo(false);
       setUser(u as unknown as AuthUser);
     } finally {
@@ -121,12 +140,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
 
-  const signup = useCallback(async (email: string, password: string, displayName: string, role: string) => {
+  const signup = useCallback(async (email: string, password: string, displayName: string, role: string, customRoleName?: string) => {
     setIsLoading(true);
     try {
-      const { token, user: u } = await api.auth.signup(email, password, displayName, role);
-      localStorage.removeItem('exceliboard_demo_role');
-      localStorage.setItem('exceliboard_token', token);
+      const { token, user: u } = await api.auth.signup(email, password, displayName, role, customRoleName);
+      localStorage.removeItem('SyncVision_demo_role');
+      localStorage.setItem('SyncVision_token', token);
       setIsDemo(false);
       setUser(u as unknown as AuthUser);
     } finally {
@@ -134,18 +153,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
 
-  const loginAsDemo = useCallback((role: string) => {
-    localStorage.removeItem('exceliboard_token');
-    localStorage.setItem('exceliboard_demo_role', role);
+  const loginAsDemo = useCallback((role: string, customRoleName?: string) => {
+    localStorage.removeItem('SyncVision_token');
+    localStorage.setItem('SyncVision_demo_role', role);
+    if (customRoleName) localStorage.setItem('SyncVision_demo_custom_role', customRoleName);
+    else localStorage.removeItem('SyncVision_demo_custom_role');
     setIsDemo(true);
-    setUser(buildDemoUser(role));
+    const demoUser = buildDemoUser(role);
+    if (role === 'other' && customRoleName) {
+      demoUser.customRoleName = customRoleName;
+      demoUser.displayName = `${customRoleName} (Demo)`;
+    }
+    setUser(demoUser);
   }, []);
 
   const logout = useCallback(() => {
     setUser(null);
     setIsDemo(false);
-    localStorage.removeItem('exceliboard_token');
-    localStorage.removeItem('exceliboard_demo_role');
+    localStorage.removeItem('SyncVision_token');
+    localStorage.removeItem('SyncVision_demo_role');
+    localStorage.removeItem('SyncVision_demo_custom_role');
   }, []);
 
   return (

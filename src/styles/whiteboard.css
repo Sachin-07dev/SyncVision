@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════════════
-   ExceliBoard — Whiteboard / Canvas Styles
-   Unique ExceliBoard design system layered on
+   SyncVision — Whiteboard / Canvas Styles
+   Unique SyncVision design system layered on
    top of the drawing engine.
    ═══════════════════════════════════════════════ */
 
@@ -15,7 +15,7 @@
 .wb-bg-aurora-dark   { background: linear-gradient(160deg, #071a15 0%, #091e28 50%, #0d1a30 100%); }
 
 /* ══════════════════════════════════════════════
-   ExceliBoard toolbar chrome (header / footer)
+   SyncVision toolbar chrome (header / footer)
    ══════════════════════════════════════════════ */
 
 .wb-toolbar {
@@ -107,7 +107,7 @@
 
 /* ══════════════════════════════════════════════
    1. HIDE EXCALIDRAW BRANDING
-   Replace with ExceliBoard identity via our
+   Replace with SyncVision identity via our
    custom header bar above the canvas.
    ══════════════════════════════════════════════ */
 
@@ -131,7 +131,7 @@
 
 /* ══════════════════════════════════════════════
    2. EXCALIDRAW CSS VARIABLE OVERRIDES
-   Set ExceliBoard's brand tokens so every panel,
+   Set SyncVision's brand tokens so every panel,
    button, picker inherits our look automatically.
    ══════════════════════════════════════════════ */
 
@@ -319,7 +319,7 @@
 
 /* ══════════════════════════════════════════════
    3. STRUCTURAL OVERRIDES — reshape the layout
-      to look distinctly like ExceliBoard
+      to look distinctly like SyncVision
    ══════════════════════════════════════════════ */
 
 /* ── Reshape Islands into pill / capsule panels ─ */
@@ -389,7 +389,7 @@
   padding: 0.875rem !important;
 }
 
-/* ── Panel section labels — ExceliBoard style ── */
+/* ── Panel section labels — SyncVision style ── */
 .excalidraw-board-wrapper .excalidraw .panelColumn .control-label,
 .excalidraw-board-wrapper .excalidraw .panelColumn h3,
 .excalidraw-board-wrapper .excalidraw .panelColumn legend {
@@ -538,7 +538,7 @@
   border-radius: 0.625rem !important;
 }
 
-/* ── Welcome screen — ExceliBoard branded ────── */
+/* ── Welcome screen — SyncVision branded ────── */
 .excalidraw-board-wrapper .excalidraw .welcome-screen-center {
   background: transparent !important;
 }

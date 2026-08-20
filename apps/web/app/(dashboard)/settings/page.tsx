@@ -55,7 +55,7 @@ export default function SettingsPage() {
                 <div className="space-y-2"><Label>Full Name</Label><Input defaultValue={user?.displayName || ''} /></div>
                 <div className="space-y-2"><Label>Email</Label><Input defaultValue={user?.email || ''} type="email" /></div>
                 <div className="space-y-2"><Label>Role</Label><div className="flex items-center gap-2 pt-2"><Badge className="capitalize">{user?.role?.replace('_', ' ') || 'student'}</Badge></div></div>
-                <div className="space-y-2"><Label>Organization</Label><Input defaultValue="ExceliBoard Inc." /></div>
+                <div className="space-y-2"><Label>Organization</Label><Input defaultValue="SyncVision Inc." /></div>
               </div>
               <div className="space-y-2"><Label>Bio</Label><Textarea placeholder="A short bio about yourself..." /></div>
               <Separator />

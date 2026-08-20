@@ -26,7 +26,7 @@ export default function FeaturesPage() {
         <div className="container mx-auto">
           <div className="text-center mb-16 animate-fade-in">
             <h1 className="text-5xl sm:text-6xl font-bold mb-6">Powerful Features for{' '}<span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Modern Teams</span></h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">Discover all the tools and capabilities that make ExceliBoard the ultimate collaborative workspace for teams, educators, and innovators.</p>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">Discover all the tools and capabilities that make SyncVision the ultimate collaborative workspace for teams, educators, and innovators.</p>
           </div>
 
           <Tabs defaultValue="ai" className="w-full">

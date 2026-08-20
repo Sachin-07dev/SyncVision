@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════
-// ExceliBoard — WebSocket Signaling Server
+// SyncVision — WebSocket Signaling Server
 // Handles: room management, WebRTC signaling,
 // real-time chat, whiteboard sync, Q&A
 // ═══════════════════════════════════════════════
@@ -16,7 +16,7 @@ app.use(express.json());
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:8080'],
+    origin: '*',
     methods: ['GET', 'POST'],
   },
 });
@@ -233,6 +233,6 @@ io.on('connection', (socket) => {
 
 const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => {
-  console.log(`\n  ExceliBoard Signaling Server running on http://localhost:${PORT}`);
+  console.log(`\n  SyncVision Signaling Server running on http://localhost:${PORT}`);
   console.log(`  Socket.IO ready for WebRTC signaling\n`);
 });

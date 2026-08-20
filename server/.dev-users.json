@@ -1,7 +1,7 @@
 [
   {
     "id": "431c8c40-689c-4b4a-be79-b96021551e6b",
-    "email": "copilot_test_user3@exceliboard.local",
+    "email": "copilot_test_user3@SyncVision.local",
     "password_hash": "$2b$12$/TPO.5n3LMmTVEx7VoUh2e5zdjg0cSCIBKzgaGoxpQx6pyTFhZpXC",
     "display_name": "Copilot Test 3",
     "avatar_url": null,
@@ -20,7 +20,7 @@
   },
   {
     "id": "4d7e10ab-e4c6-4bbe-b4b3-9eeb245af6f5",
-    "email": "copilot_signup_1772482541@exceliboard.local",
+    "email": "copilot_signup_1772482541@SyncVision.local",
     "password_hash": "$2b$12$XGVTkZo4aqJA.ZemQLxjguelOkD5dGHYXAC8ry8bPHLmEkpxiop22",
     "display_name": "Copilot Signup",
     "avatar_url": null,
@@ -48,7 +48,7 @@
     "timezone": "UTC",
     "locale": "en-US",
     "created_at": "2026-03-02T20:31:28.068Z",
-    "last_active_at": "2026-03-03T05:00:19.605Z",
+    "last_active_at": "2026-08-09T06:12:14.843Z",
     "preferences": {
       "theme": "dark",
       "notifications": true,
@@ -86,7 +86,45 @@
     "timezone": "UTC",
     "locale": "en-US",
     "created_at": "2026-03-03T03:19:55.488Z",
-    "last_active_at": "2026-03-03T03:19:55.488Z",
+    "last_active_at": "2026-08-20T10:42:50.618Z",
+    "preferences": {
+      "theme": "dark",
+      "notifications": true,
+      "soundEffects": true,
+      "compactMode": false
+    }
+  },
+  {
+    "id": "8481222d-fbff-43c5-9e7d-c9c9f01d5d35",
+    "email": "sachinsisodiya.workk@gmail.com",
+    "password_hash": "$2b$12$5cL2sNDe/I1J2WuLj2tjMeGbxflA4.PWgIvDQ96Sfan0lNTQ5kj3O",
+    "display_name": "NARESH dnh",
+    "avatar_url": null,
+    "role": "student",
+    "org_id": null,
+    "timezone": "UTC",
+    "locale": "en-US",
+    "created_at": "2026-08-09T06:11:31.649Z",
+    "last_active_at": "2026-08-09T06:11:31.649Z",
+    "preferences": {
+      "theme": "dark",
+      "notifications": true,
+      "soundEffects": true,
+      "compactMode": false
+    }
+  },
+  {
+    "id": "984af7f8-da89-4a66-909e-adada03a47d3",
+    "email": "rinkydhruwanshi81@gmail.com",
+    "password_hash": "$2b$12$kA3IsUY02o3C2OhsnqMxhucfnRk8hRKjAMHDFlu1ryXPdtAOHtAay",
+    "display_name": "Rinki Singh ",
+    "avatar_url": null,
+    "role": "student",
+    "org_id": null,
+    "timezone": "UTC",
+    "locale": "en-US",
+    "created_at": "2026-08-09T06:17:00.019Z",
+    "last_active_at": "2026-08-09T06:17:00.019Z",
     "preferences": {
       "theme": "dark",
       "notifications": true,

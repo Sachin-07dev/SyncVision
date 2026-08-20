@@ -58,9 +58,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [notifications, setNotifications] = useState<Notification[]>(MOCK_NOTIFICATIONS);
 
   useEffect(() => {
-    const stored = localStorage.getItem('exceliboard_user');
+    const stored = localStorage.getItem('SyncVision_user');
     if (stored) {
-      try { setUser(JSON.parse(stored)); } catch { localStorage.removeItem('exceliboard_user'); }
+      try { setUser(JSON.parse(stored)); } catch { localStorage.removeItem('SyncVision_user'); }
     }
     setIsLoading(false);
   }, []);
@@ -85,7 +85,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         };
 
     setUser(loggedInUser);
-    localStorage.setItem('exceliboard_user', JSON.stringify(loggedInUser));
+    localStorage.setItem('SyncVision_user', JSON.stringify(loggedInUser));
     setIsLoading(false);
   }, []);
 
@@ -107,13 +107,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     registeredUsers.set(email, { password, user: newUser });
     setUser(newUser);
-    localStorage.setItem('exceliboard_user', JSON.stringify(newUser));
+    localStorage.setItem('SyncVision_user', JSON.stringify(newUser));
     setIsLoading(false);
   }, []);
 
   const logout = useCallback(() => {
     setUser(null);
-    localStorage.removeItem('exceliboard_user');
+    localStorage.removeItem('SyncVision_user');
   }, []);
 
   const markNotificationRead = useCallback((id: string) => {

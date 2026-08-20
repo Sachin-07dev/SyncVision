@@ -5,7 +5,8 @@
 import { useEffect, useRef, useCallback, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 
-const SOCKET_URL = 'http://localhost:3001';
+const isSecure = window.location.protocol === 'https:';
+const SOCKET_URL = isSecure ? window.location.origin : `http://${window.location.hostname}:3001`;
 
 export interface SocketUser {
   id: string;

@@ -1,7 +1,11 @@
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+const isSecure = window.location.protocol === 'https:';
+const API_BASE = import.meta.env.VITE_API_URL ||
+  (isSecure ? '' : `http://${window.location.hostname}:3001`);
+// When HTTPS: API calls go to /api/* on same origin (Vite proxy → localhost:3001)
+// When HTTP:  direct to localhost:3001
 
 function getToken(): string | null {
-  return localStorage.getItem('exceliboard_token');
+  return localStorage.getItem('SyncVision_token');
 }
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
@@ -59,10 +63,10 @@ export interface ApiUser {
 
 export const api = {
   auth: {
-    signup: (email: string, password: string, displayName: string, role: string) =>
+    signup: (email: string, password: string, displayName: string, role: string, customRoleName?: string) =>
       request<AuthResponse>('/api/auth/signup', {
         method: 'POST',
-        body: JSON.stringify({ email, password, displayName, role }),
+        body: JSON.stringify({ email, password, displayName, role, customRoleName }),
       }),
 
     login: (email: string, password: string) =>
@@ -119,7 +123,27 @@ export const api = {
         body: JSON.stringify({ status }),
       }),
 
+    update: (id: string, data: { title?: string; startTime?: string; scheduledDuration?: number; description?: string }) =>
+      request<any>(`/api/sessions/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+      }),
+
     join: (id: string) =>
       request<any>(`/api/sessions/${id}/join`, { method: 'POST' }),
+  },
+
+  ai: {
+    chat: (messages: { role: string; content: string }[], subject?: string) =>
+      request<{ message: { role: string; content: string } }>('/api/ai/chat', {
+        method: 'POST',
+        body: JSON.stringify({ messages, subject }),
+      }),
+
+    explain: (topic: string, level?: string) =>
+      request<{ message: { role: string; content: string } }>('/api/ai/explain', {
+        method: 'POST',
+        body: JSON.stringify({ topic, level }),
+      }),
   },
 };

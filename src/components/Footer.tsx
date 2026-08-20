@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Github, Twitter, Linkedin, Mail } from "lucide-react";
+import Logo from "@/components/Logo";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -10,14 +11,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center shadow-glow">
-                <span className="text-xl font-bold">E</span>
-              </div>
-              <span className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                ExceliBoard
-              </span>
-            </div>
+            <Logo to="/" size="md" />
             <p className="text-sm text-muted-foreground">
               AI-powered collaborative whiteboard for teams, educators, and innovators.
             </p>
@@ -31,7 +25,7 @@ const Footer = () => {
               <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
                 <Linkedin size={20} />
               </a>
-              <a href="mailto:hello@exceliboard.com" className="text-muted-foreground hover:text-primary transition-colors">
+              <a href="mailto:hello@SyncVision.com" className="text-muted-foreground hover:text-primary transition-colors">
                 <Mail size={20} />
               </a>
             </div>
@@ -72,7 +66,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-border mt-8 pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; {currentYear} ExceliBoard. All rights reserved.</p>
+          <p>&copy; {currentYear} SyncVision. All rights reserved.</p>
         </div>
       </div>
     </footer>

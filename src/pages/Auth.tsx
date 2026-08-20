@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useSearchParams, useNavigate } from "react-router-dom";
+import Logo from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -7,13 +8,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
-import { GraduationCap, BookOpen, Users, Shield, ChevronDown, ChevronUp, Sparkles } from "lucide-react";
+import { GraduationCap, BookOpen, Users, Shield, ChevronDown, ChevronUp, Sparkles, HelpCircle } from "lucide-react";
 
 const ACCOUNT_TYPES = [
   { value: "student", label: "Student", description: "Join sessions & collaborate with peers" },
   { value: "teacher", label: "Teacher / Educator", description: "Host lectures, meetings & manage boards" },
   { value: "interviewer", label: "Interviewer", description: "Conduct technical & coding interviews" },
   { value: "org_admin", label: "Organization Admin", description: "Full platform management & analytics" },
+  { value: "other", label: "Other", description: "Custom role — specify your own" },
 ];
 
 const DEMO_ROLES = [
@@ -49,6 +51,14 @@ const DEMO_ROLES = [
     color: "text-purple-400",
     bg: "bg-purple-500/10 border-purple-500/30 hover:border-purple-500/60",
   },
+  {
+    value: "other",
+    label: "Other",
+    description: "Explore with a custom role",
+    icon: HelpCircle,
+    color: "text-gray-400",
+    bg: "bg-gray-500/10 border-gray-500/30 hover:border-gray-500/60",
+  },
 ];
 
 const Auth = () => {
@@ -61,13 +71,21 @@ const Auth = () => {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [role, setRole] = useState("student");
+  const [customRoleName, setCustomRoleName] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [showDemoPicker, setShowDemoPicker] = useState(false);
 
   const handleDemoLogin = (demoRole: string) => {
-    loginAsDemo(demoRole);
-    toast.success(`Entered as Demo ${DEMO_ROLES.find(r => r.value === demoRole)?.label}`);
+    if (demoRole === 'other') {
+      const name = prompt('Enter your custom role name (e.g., Freelancer, Mentor, Parent):');
+      if (!name?.trim()) return;
+      loginAsDemo(demoRole, name.trim());
+      toast.success(`Entered as Demo — ${name.trim()}`);
+    } else {
+      loginAsDemo(demoRole);
+      toast.success(`Entered as Demo ${DEMO_ROLES.find(r => r.value === demoRole)?.label}`);
+    }
     navigate("/dashboard");
   };
 
@@ -78,7 +96,12 @@ const Auth = () => {
 
     try {
       if (isSignUp) {
-        await signup(email, password, name, role);
+        if (role === 'other' && !customRoleName.trim()) {
+          setError('Please enter your custom role name');
+          setIsSubmitting(false);
+          return;
+        }
+        await signup(email, password, name, role, role === 'other' ? customRoleName.trim() : undefined);
         toast.success("Account created successfully!");
       } else {
         await login(email, password);
@@ -98,18 +121,14 @@ const Auth = () => {
       <Card className="w-full max-w-md border border-border">
         <CardHeader className="space-y-1">
           <div className="flex justify-center mb-4">
-            <Link to="/" className="flex items-center space-x-2">
-              <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center">
-                <span className="text-2xl font-bold text-primary-foreground">E</span>
-              </div>
-            </Link>
+            <Logo to="/" size="lg" showText={false} />
           </div>
           <CardTitle className="text-2xl text-center">
             {isSignUp ? "Create an account" : "Welcome back"}
           </CardTitle>
           <CardDescription className="text-center">
             {isSignUp
-              ? "Sign up to start collaborating with ExceliBoard"
+              ? "Sign up to start collaborating with SyncVision"
               : "Sign in to continue to your workspace"}
           </CardDescription>
         </CardHeader>
@@ -154,6 +173,23 @@ const Auth = () => {
                     </SelectContent>
                   </Select>
                 </div>
+
+                {role === 'other' && (
+                  <div className="space-y-2">
+                    <Label htmlFor="customRoleName">Your Role Name</Label>
+                    <Input
+                      id="customRoleName"
+                      placeholder="e.g., Freelancer, Mentor, Parent, Researcher..."
+                      value={customRoleName}
+                      onChange={(e) => setCustomRoleName(e.target.value)}
+                      required
+                      maxLength={50}
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      Describe your role so we can tailor your experience.
+                    </p>
+                  </div>
+                )}
               </>
             )}
 
