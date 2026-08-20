@@ -1,5 +1,5 @@
 {
-  "name": "exceliboard",
+  "name": "SyncVision",
   "private": true,
   "workspaces": [
     "apps/*",
@@ -10,8 +10,8 @@
     "dev": "turbo dev",
     "build": "turbo build",
     "lint": "turbo lint",
-    "dev:web": "turbo dev --filter=@exceliboard/web",
-    "dev:signaling": "turbo dev --filter=@exceliboard/signaling",
+    "dev:web": "turbo dev --filter=@SyncVision/web",
+    "dev:signaling": "turbo dev --filter=@SyncVision/signaling",
     "dev:all": "turbo dev --parallel"
   },
   "devDependencies": {
