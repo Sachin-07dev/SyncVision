@@ -17,6 +17,10 @@ dist-ssr
 .env.local
 .env.*.local
 
+# Local development data
+server/.dev-users.json
+server/.dev-boards.json
+
 # Build outputs
 .next
 .turbo

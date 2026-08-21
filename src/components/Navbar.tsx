@@ -31,24 +31,26 @@ const Navbar = () => {
     <nav className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-lg border-b border-border">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Logo to="/" size="md" />
+          <div className="flex items-center gap-10">
+            {/* Logo */}
+            <Logo to="/" size="md" />
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`transition-colors ${
-                  isActive(link.path)
-                    ? "text-primary"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {link.name}
-              </Link>
-            ))}
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex space-x-8">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  className={`font-medium transition-all duration-200 ease-out hover:-translate-y-0.5 ${
+                    isActive(link.path)
+                      ? "text-primary"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              ))}
+            </div>
           </div>
 
           {/* Desktop Auth/User Area */}
@@ -105,7 +107,7 @@ const Navbar = () => {
               <Link
                 key={link.path}
                 to={link.path}
-                className={`block py-2 transition-colors ${
+                className={`block py-2 font-medium transition-all duration-200 ease-out hover:-translate-y-0.5 ${
                   isActive(link.path)
                     ? "text-primary"
                     : "text-muted-foreground hover:text-foreground"
