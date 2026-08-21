@@ -67,7 +67,9 @@ const Index = () => {
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-6">
             <p className="text-sm text-muted-foreground font-medium uppercase tracking-wide">
-              Try it right now — no sign-up needed
+              {isAuthenticated
+                ? "Continue working in your shared workspace"
+                : "Try it right now — no sign-up needed"}
             </p>
           </div>
           <div className="relative group">
@@ -138,22 +140,41 @@ const Index = () => {
           <Card className="border border-border bg-card">
             <CardContent className="p-10 text-center">
               <h2 className="text-2xl sm:text-3xl font-bold mb-3 text-foreground">
-                Ready to Start Collaborating?
+                {isAuthenticated ? "Welcome back to SyncVision" : "Ready to Start Collaborating?"}
               </h2>
               <p className="text-muted-foreground mb-6 max-w-lg mx-auto">
-                Create a free account and start using SyncVision with your team in seconds.
+                {isAuthenticated
+                  ? "Jump back into your dashboard or open a whiteboard and keep creating."
+                  : "Create a free account and start using SyncVision with your team in seconds."}
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Link to="/auth?mode=signup">
-                  <Button size="lg" className="px-8 bg-primary hover:bg-primary/90">
-                    Sign Up Free
-                  </Button>
-                </Link>
-                <Link to="/auth">
-                  <Button size="lg" variant="outline" className="px-8">
-                    Sign In
-                  </Button>
-                </Link>
+                {isAuthenticated ? (
+                  <>
+                    <Link to="/dashboard">
+                      <Button size="lg" className="px-8 bg-primary hover:bg-primary/90">
+                        Go to Dashboard
+                      </Button>
+                    </Link>
+                    <Link to="/whiteboard">
+                      <Button size="lg" variant="outline" className="px-8">
+                        Open Whiteboard
+                      </Button>
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link to="/auth?mode=signup">
+                      <Button size="lg" className="px-8 bg-primary hover:bg-primary/90">
+                        Sign Up Free
+                      </Button>
+                    </Link>
+                    <Link to="/auth">
+                      <Button size="lg" variant="outline" className="px-8">
+                        Sign In
+                      </Button>
+                    </Link>
+                  </>
+                )}
               </div>
             </CardContent>
           </Card>
